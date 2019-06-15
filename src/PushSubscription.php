@@ -19,6 +19,26 @@ class PushSubscription extends Model
         'content_encoding',
     ];
 
+    public function __construct(array $attributes = [])
+    {
+        if (!isset($this->table)) {
+            $this->setTable(config('webpush.db_table'));
+        }
+
+        parent::__construct($attributes);
+    }
+
+    /**
+     * Get the connection name for the push subscriptions.
+     *
+     * @return string
+     */
+    public function getConnectionName()
+    {
+        $connName = config('webpush.db_connection');
+        return $connName ?: config('database.default');
+    }
+
     /**
      * Get the user that owns the subscription.
      *
